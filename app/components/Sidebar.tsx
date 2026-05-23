@@ -129,7 +129,7 @@ export function Sidebar() {
             to search
           </p>
           <p className="text-xs text-sidebar-foreground/40">
-            Portfolio · <span className="text-sidebar-foreground/60">Luigi Dalcanale</span>
+            Built by <span className="text-sidebar-foreground/60">Luigi Dalcanale</span>
           </p>
         </div>
       </aside>
