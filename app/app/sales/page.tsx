@@ -17,9 +17,10 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
   LineChart,
   Line,
+  AreaChart,
+  Area,
 } from "recharts";
 
 const CHART_COLORS = [
@@ -42,10 +43,12 @@ const todayTotals = {
   aov: salesData.averageOrderValue,
 };
 
-// Derived comparisons from weeklyTrend (simulated).
 const yesterday = salesData.weeklyTrend[salesData.weeklyTrend.length - 2];
-const weekTotal = salesData.weeklyTrend.reduce((s, d) => s + d.revenue, 0);
-const weekOrders = salesData.weeklyTrend.reduce((s, d) => s + d.orders, 0);
+const last7 = salesData.weeklyTrend.slice(-7);
+const weekTotal = last7.reduce((s, d) => s + d.revenue, 0);
+const weekOrders = last7.reduce((s, d) => s + d.orders, 0);
+
+const channelTotal = salesData.channels.reduce((s, c) => s + c.revenue, 0);
 
 const periodData = (p: Period) => {
   if (p === "yesterday") {
@@ -109,7 +112,7 @@ export default function SalesDashboardPage() {
       </div>
 
       {/* Key metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
         <MetricCard label="Gross Sales" value={fmt(d.gross)} trend={d.label} status="healthy" direction="up" />
         <MetricCard label="Net Sales" value={fmt(d.net)} trend={`After refunds`} status="healthy" />
         <MetricCard label="Orders" value={String(d.orders)} trend={period === "week" ? "7-day total" : "Strong day"} status="healthy" direction="up" />
@@ -117,30 +120,61 @@ export default function SalesDashboardPage() {
         <MetricCard label="Avg Order Value" value={`$${d.aov.toFixed(2)}`} trend="Stable" status="healthy" direction="flat" />
       </div>
 
+      {/* Secondary stats: customers + cart */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+        <MetricCard label="New Customers" value={String(salesData.newCustomers)} trend="79% of orders" status="healthy" direction="up" />
+        <MetricCard label="Returning Customers" value={String(salesData.returningCustomers)} trend={`${(salesData.returningCustomerRate * 100).toFixed(0)}% of orders`} status="healthy" />
+        <MetricCard label="Abandoned Carts" value={String(salesData.abandonedCarts)} trend={`${fmt(salesData.abandonedCartValue)} value at risk`} status="warning" direction="down" />
+        <MetricCard label="Sessions" value={salesData.sessions.toLocaleString()} trend="Strong traffic" status="healthy" direction="up" />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {/* Revenue by channel */}
+        {/* Revenue by channel — fixed labels */}
         <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-foreground mb-4">Revenue by Channel</h2>
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart>
-              <Pie
-                data={salesData.channels}
-                dataKey="revenue"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={86}
-                label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                labelLine={false}
-              >
-                {salesData.channels.map((_, i) => (
-                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(v) => fmt(Number(v))} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 items-center">
+            <div className="sm:col-span-3">
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie
+                    data={salesData.channels}
+                    dataKey="revenue"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={48}
+                    outerRadius={86}
+                    paddingAngle={2}
+                    stroke="var(--card)"
+                    strokeWidth={2}
+                  >
+                    {salesData.channels.map((_, i) => (
+                      <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(v) => fmt(Number(v))} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Custom legend with percentages — readable and no overflow */}
+            <ul className="sm:col-span-2 space-y-2.5">
+              {salesData.channels.map((c, i) => {
+                const pct = (c.revenue / channelTotal) * 100;
+                return (
+                  <li key={c.name} className="flex items-center gap-2.5">
+                    <span
+                      className="w-3 h-3 rounded-sm flex-shrink-0"
+                      style={{ background: CHART_COLORS[i % CHART_COLORS.length] }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground leading-tight truncate">{c.name}</p>
+                      <p className="text-xs text-muted-foreground">{fmt(c.revenue)} · {pct.toFixed(1)}%</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
 
         {/* Units sold by product */}
@@ -163,18 +197,39 @@ export default function SalesDashboardPage() {
         </div>
       </div>
 
-      {/* 7-day revenue trend */}
-      <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm mb-6">
-        <h2 className="text-sm font-semibold text-foreground mb-4">7-Day Revenue Trend</h2>
-        <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={salesData.weeklyTrend}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-            <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
-            <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
-            <Tooltip formatter={(v) => fmt(Number(v))} />
-            <Line type="monotone" dataKey="revenue" stroke="var(--chart-1)" strokeWidth={2.5} dot={{ r: 4 }} />
-          </LineChart>
-        </ResponsiveContainer>
+      {/* Hourly today + 14-day trend */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-4">Revenue by Hour — Today</h2>
+          <ResponsiveContainer width="100%" height={220}>
+            <AreaChart data={salesData.hourlyToday}>
+              <defs>
+                <linearGradient id="hourGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="hour" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+              <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(v) => `$${v}`} />
+              <Tooltip formatter={(v) => fmt(Number(v))} />
+              <Area type="monotone" dataKey="revenue" stroke="var(--chart-1)" strokeWidth={2.5} fill="url(#hourGradient)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-4">14-Day Revenue Trend</h2>
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart data={salesData.weeklyTrend}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+              <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
+              <Tooltip formatter={(v) => fmt(Number(v))} />
+              <Line type="monotone" dataKey="revenue" stroke="var(--chart-1)" strokeWidth={2.5} dot={{ r: 3 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Product table */}
@@ -211,6 +266,61 @@ export default function SalesDashboardPage() {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      {/* Referrers + Top Customers */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-border">
+            <h2 className="text-sm font-semibold text-foreground">Top Traffic Sources — Today</h2>
+          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
+                <th className="px-5 py-3 text-left">Source</th>
+                <th className="px-5 py-3 text-right">Sessions</th>
+                <th className="px-5 py-3 text-right">Orders</th>
+                <th className="px-5 py-3 text-right">Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+              {salesData.topReferrers.map((r) => (
+                <tr key={r.source} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                  <td className="px-5 py-3 font-medium text-foreground">{r.source}</td>
+                  <td className="px-5 py-3 text-right tabular-nums">{r.sessions.toLocaleString()}</td>
+                  <td className="px-5 py-3 text-right tabular-nums">{r.orders}</td>
+                  <td className="px-5 py-3 text-right font-semibold tabular-nums">{fmt(r.revenue)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-border">
+            <h2 className="text-sm font-semibold text-foreground">Top Customers — Lifetime Value</h2>
+          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
+                <th className="px-5 py-3 text-left">Customer</th>
+                <th className="px-5 py-3 text-right">Orders</th>
+                <th className="px-5 py-3 text-right">LTV</th>
+                <th className="px-5 py-3 text-right">Last Purchase</th>
+              </tr>
+            </thead>
+            <tbody>
+              {salesData.topCustomers.map((c) => (
+                <tr key={c.name} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                  <td className="px-5 py-3 font-medium text-foreground">{c.name}</td>
+                  <td className="px-5 py-3 text-right tabular-nums">{c.orders}</td>
+                  <td className="px-5 py-3 text-right font-semibold tabular-nums">{fmt(c.lifetimeValue)}</td>
+                  <td className="px-5 py-3 text-right text-muted-foreground tabular-nums">{c.lastPurchase}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* AI insights */}

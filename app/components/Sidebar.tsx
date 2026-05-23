@@ -128,7 +128,9 @@ export function Sidebar() {
             </kbd>{" "}
             to search
           </p>
-          <p className="text-xs text-sidebar-foreground/40">Portfolio · simulated data</p>
+          <p className="text-xs text-sidebar-foreground/40">
+            Portfolio · <span className="text-sidebar-foreground/60">Luigi Dalcanale</span>
+          </p>
         </div>
       </aside>
     </>

@@ -8,6 +8,9 @@ import { DemoBanner } from "@/components/DemoBanner";
 import { OnboardingDialog } from "@/components/OnboardingDialog";
 import { CommandPalette } from "@/components/CommandPalette";
 import { RecruiterMode } from "@/components/RecruiterMode";
+import { Toaster } from "@/components/Toaster";
+import { TopBar } from "@/components/TopBar";
+import { AIChatWidget } from "@/components/AIChatWidget";
 import { Suspense } from "react";
 
 const inter = Inter({
@@ -39,19 +42,23 @@ export default function RootLayout({
     >
       <body className="h-full bg-background text-foreground">
         <ThemeProvider>
-          <DemoBanner />
-          <div className="flex h-[calc(100%-2rem)]">
-            <Sidebar />
-            <main className="flex-1 overflow-y-auto" id="main-scroll">
-              <ScrollToTop />
-              <Suspense fallback={null}>
-                <RecruiterMode />
-              </Suspense>
-              {children}
-            </main>
-          </div>
-          <OnboardingDialog />
-          <CommandPalette />
+          <Toaster>
+            <DemoBanner />
+            <div className="flex h-[calc(100%-2rem)]">
+              <Sidebar />
+              <main className="flex-1 overflow-y-auto" id="main-scroll">
+                <ScrollToTop />
+                <Suspense fallback={null}>
+                  <RecruiterMode />
+                </Suspense>
+                <TopBar />
+                {children}
+              </main>
+            </div>
+            <OnboardingDialog />
+            <CommandPalette />
+            <AIChatWidget />
+          </Toaster>
         </ThemeProvider>
       </body>
     </html>

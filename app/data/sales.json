@@ -8,6 +8,10 @@
   "conversionRate": 0.019,
   "averageOrderValue": 37.93,
   "returningCustomerRate": 0.21,
+  "newCustomers": 73,
+  "returningCustomers": 19,
+  "abandonedCarts": 41,
+  "abandonedCartValue": 1820,
   "channels": [
     { "name": "Paid Social", "revenue": 1940 },
     { "name": "Email", "revenue": 840 },
@@ -21,6 +25,13 @@
     { "name": "Ship It With AI Tote", "units": 4, "price": 24, "revenue": 96, "cost": 8.25, "margin": 0.656 }
   ],
   "weeklyTrend": [
+    { "date": "May 8",  "revenue": 2410, "orders": 64 },
+    { "date": "May 9",  "revenue": 2280, "orders": 60 },
+    { "date": "May 10", "revenue": 1860, "orders": 49 },
+    { "date": "May 11", "revenue": 2120, "orders": 56 },
+    { "date": "May 12", "revenue": 2480, "orders": 65 },
+    { "date": "May 13", "revenue": 2710, "orders": 71 },
+    { "date": "May 14", "revenue": 2890, "orders": 76 },
     { "date": "May 15", "revenue": 2840, "orders": 75 },
     { "date": "May 16", "revenue": 2650, "orders": 70 },
     { "date": "May 17", "revenue": 1980, "orders": 52 },
@@ -28,6 +39,36 @@
     { "date": "May 19", "revenue": 2590, "orders": 68 },
     { "date": "May 20", "revenue": 2958, "orders": 78 },
     { "date": "May 21", "revenue": 3490, "orders": 92 }
+  ],
+  "hourlyToday": [
+    { "hour": "6 AM",  "revenue": 0,    "orders": 0  },
+    { "hour": "7 AM",  "revenue": 84,   "orders": 2  },
+    { "hour": "8 AM",  "revenue": 156,  "orders": 4  },
+    { "hour": "9 AM",  "revenue": 218,  "orders": 6  },
+    { "hour": "10 AM", "revenue": 312,  "orders": 8  },
+    { "hour": "11 AM", "revenue": 405,  "orders": 11 },
+    { "hour": "12 PM", "revenue": 388,  "orders": 10 },
+    { "hour": "1 PM",  "revenue": 296,  "orders": 8  },
+    { "hour": "2 PM",  "revenue": 342,  "orders": 9  },
+    { "hour": "3 PM",  "revenue": 410,  "orders": 11 },
+    { "hour": "4 PM",  "revenue": 468,  "orders": 12 },
+    { "hour": "5 PM",  "revenue": 411,  "orders": 11 }
+  ],
+  "topReferrers": [
+    { "source": "instagram.com",    "sessions": 1620, "orders": 31, "revenue": 1145 },
+    { "source": "tiktok.com",        "sessions": 980,  "orders": 14, "revenue": 528  },
+    { "source": "Direct",            "sessions": 720,  "orders": 18, "revenue": 690  },
+    { "source": "google.com",        "sessions": 685,  "orders": 16, "revenue": 612  },
+    { "source": "Email — Newsletter","sessions": 410,  "orders": 9,  "revenue": 348  },
+    { "source": "twitter.com",       "sessions": 245,  "orders": 3,  "revenue": 102  },
+    { "source": "producthunt.com",   "sessions": 190,  "orders": 1,  "revenue": 65   }
+  ],
+  "topCustomers": [
+    { "name": "Jordan Lee",     "orders": 4, "lifetimeValue": 312, "lastPurchase": "May 21" },
+    { "name": "Priya Shah",     "orders": 3, "lifetimeValue": 248, "lastPurchase": "May 20" },
+    { "name": "Marcus Webb",    "orders": 3, "lifetimeValue": 226, "lastPurchase": "May 19" },
+    { "name": "Ana Rodriguez",  "orders": 2, "lifetimeValue": 184, "lastPurchase": "May 21" },
+    { "name": "Devon Park",     "orders": 2, "lifetimeValue": 116, "lastPurchase": "May 18" }
   ],
   "refundsByType": [
     { "type": "Wrong size", "count": 2, "amount": 76 },
@@ -39,6 +80,8 @@
     "Prompt Engineer Tee sold the most units and should remain a core product.",
     "Ship It With AI Tote is underperforming and should not receive additional ad spend today.",
     "Paid social drove the largest revenue share, but email produced strong revenue without paid media cost.",
-    "Conversion rate is slightly below the 2.2% goal, which may be connected to product page friction or sizing concerns."
+    "Conversion rate is slightly below the 2.2% goal, which may be connected to product page friction or sizing concerns.",
+    "Instagram is the top referrer by sessions; TikTok drives traffic but converts at half Instagram's rate — review landing experience.",
+    "$1,820 in abandoned-cart value today across 41 carts. An abandonment recovery sequence could recover 8-12% of that."
   ]
 }

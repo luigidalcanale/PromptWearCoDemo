@@ -1,11 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import { MetricCard } from "@/components/MetricCard";
 import { AIInsightBox } from "@/components/AIInsightBox";
 import { PageHeader } from "@/components/PageHeader";
 import { StatusBadge } from "@/components/StatusBadge";
 import { PrintButton } from "@/components/PrintButton";
 import { LastUpdated } from "@/components/LastUpdated";
+import { useToast } from "@/components/Toaster";
 import ceoData from "@/data/ceoSummary.json";
-import { AlertTriangle, CheckCircle, TrendingUp } from "lucide-react";
+import { AlertTriangle, CheckCircle, TrendingUp, Check, X } from "lucide-react";
 
 const urgencyVariant = (u: string) =>
   u === "high" ? "risk" : u === "medium" ? "warning" : "info";
@@ -22,7 +26,32 @@ const trendDirection = (trend: string): "up" | "down" | "flat" | undefined => {
   return undefined;
 };
 
+type Decision = "approved" | "rejected";
+
 export default function CEOHomePage() {
+  const { toast } = useToast();
+  const [decisions, setDecisions] = useState<Record<number, Decision>>({});
+
+  const decide = (priority: number, issue: string, action: string, choice: Decision) => {
+    setDecisions((d) => ({ ...d, [priority]: choice }));
+    if (choice === "approved") {
+      toast({
+        variant: "success",
+        title: `Approved — ${issue}`,
+        description: `${action}. Logged to Decision Log.`,
+      });
+    } else {
+      toast({
+        variant: "warning",
+        title: `Dismissed — ${issue}`,
+        description: `Recommendation set aside for now.`,
+      });
+    }
+  };
+
+  const open = ceoData.priorities.filter((p) => !decisions[p.priority]);
+  const completed = ceoData.priorities.filter((p) => decisions[p.priority]);
+
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto">
       <PageHeader
@@ -59,19 +88,27 @@ export default function CEOHomePage() {
           <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
             <TrendingUp size={18} className="text-blue-500" />
             AI-Recommended CEO Priorities
+            <span className="text-xs font-normal text-muted-foreground ml-1">
+              ({open.length} open)
+            </span>
           </h2>
           <div className="space-y-3">
-            {ceoData.priorities.map((p) => (
+            {open.length === 0 && (
+              <div className="bg-card border border-border rounded-xl p-5 text-sm text-muted-foreground text-center">
+                All AI recommendations handled. Great work.
+              </div>
+            )}
+            {open.map((p) => (
               <div
                 key={p.priority}
-                className="bg-card text-card-foreground rounded-xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-card text-card-foreground rounded-xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow fade-in"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
                     <span className="flex-shrink-0 w-7 h-7 rounded-full bg-muted text-foreground text-xs font-bold flex items-center justify-center mt-0.5">
                       {p.priority}
                     </span>
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-foreground">{p.issue}</p>
                       <p className="text-sm text-muted-foreground mt-1">{p.reason}</p>
                       <p className="text-sm font-medium text-blue-700 dark:text-blue-300 mt-2">→ {p.action}</p>
@@ -82,9 +119,58 @@ export default function CEOHomePage() {
                     variant={urgencyVariant(p.urgency) as "risk" | "warning" | "info"}
                   />
                 </div>
+                <div className="mt-4 flex items-center gap-2">
+                  <button
+                    onClick={() => decide(p.priority, p.issue, p.action, "approved")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
+                  >
+                    <Check size={13} /> Approve
+                  </button>
+                  <button
+                    onClick={() => decide(p.priority, p.issue, p.action, "rejected")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card hover:bg-muted/50 text-foreground text-xs font-semibold transition-colors"
+                  >
+                    <X size={13} /> Dismiss
+                  </button>
+                  <span className="text-[11px] text-muted-foreground ml-auto">
+                    AI confidence: {p.urgency === "high" ? "92%" : "84%"}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
+
+          {completed.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <CheckCircle size={15} className="text-green-500" />
+                Completed Today ({completed.length})
+              </h3>
+              <div className="space-y-2">
+                {completed.map((p) => {
+                  const d = decisions[p.priority];
+                  return (
+                    <div
+                      key={p.priority}
+                      className="bg-muted/40 border border-border rounded-lg px-4 py-2.5 flex items-center gap-3 fade-in"
+                    >
+                      <span
+                        className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
+                          d === "approved" ? "bg-green-500 text-white" : "bg-muted-foreground/30 text-foreground"
+                        }`}
+                      >
+                        {d === "approved" ? <Check size={12} /> : <X size={12} />}
+                      </span>
+                      <p className="text-sm text-foreground flex-1 line-through opacity-70">{p.issue}</p>
+                      <span className="text-[11px] text-muted-foreground">
+                        {d === "approved" ? "Approved" : "Dismissed"}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
