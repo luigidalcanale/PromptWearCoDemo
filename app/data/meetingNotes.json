@@ -1,0 +1,34 @@
+{
+  "date": "2026-05-21",
+  "title": "Daily Operations Check-In",
+  "attendees": ["CEO", "Operations Lead", "Marketing Contractor", "Customer Support Contractor"],
+  "transcript": [
+    { "speaker": "Operations Lead", "line": "Hoodie inventory is moving faster than expected. At the current pace, we could run out next week." },
+    { "speaker": "Marketing Contractor", "line": "The hoodie ad is outperforming everything else. I recommend shifting budget away from the tote campaign." },
+    { "speaker": "Customer Support Contractor", "line": "Most complaints today are sizing-related. Customers say the size chart is hard to find." },
+    { "speaker": "CEO", "line": "Let's reorder hoodies, update the size chart, and pause the tote campaign by tomorrow." }
+  ],
+  "aiSummary": "PromptWear Co. reviewed current sales, inventory, marketing, and customer service issues. The team agreed that hoodie demand is the biggest opportunity and inventory risk. The tote campaign is underperforming, and customer complaints are mainly tied to sizing confusion.",
+  "actionItems": [
+    { "owner": "CEO", "action": "Approve 150-unit hoodie reorder", "deadline": "Today" },
+    { "owner": "Marketing Contractor", "action": "Pause tote ad campaign", "deadline": "Tomorrow" },
+    { "owner": "Web Contractor", "action": "Move size chart higher on product pages", "deadline": "Tomorrow" },
+    { "owner": "Customer Support", "action": "Create sizing response template", "deadline": "Today" },
+    { "owner": "Supplier Contact", "action": "Request partial hoodie shipment from StitchHub", "deadline": "Today" }
+  ],
+  "decisions": [
+    { "decision": "Reorder hoodies", "reason": "Demand is outpacing inventory" },
+    { "decision": "Pause tote campaign", "reason": "Low ROAS — not generating enough return" },
+    { "decision": "Improve size chart placement", "reason": "Reduce refunds and sizing complaints" },
+    { "decision": "Increase hoodie ad budget", "reason": "Campaign has strongest performance at 3.8x ROAS" }
+  ],
+  "spanishTranslation": {
+    "label": "Supplier Email — Spanish Translation",
+    "original": "Hi, we are seeing increased demand for the Built With AI Hoodie. Can you send a partial shipment before the full delivery date? We want to avoid running out of stock next week.",
+    "translated": "Hola, estamos viendo un aumento en la demanda de las sudaderas \"Built With AI.\" ¿Sería posible enviar una parte del pedido antes de la fecha completa de entrega? Queremos evitar quedarnos sin inventario durante la próxima semana."
+  },
+  "followUpEmail": {
+    "subject": "Action Items from Today's Operations Meeting",
+    "body": "Team, thank you for the updates today. The main priorities are approving the hoodie reorder, pausing the tote campaign, improving the size chart, and contacting the supplier about a partial shipment. Please update the dashboard once each task is completed."
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "metrics": {
+    "csatScore": 4.3,
+    "avgResponseTimeHours": 3.2,
+    "openTickets": 14,
+    "resolvedToday": 9,
+    "refundRate": 4.3
+  },
+  "issueSummary": [
+    { "type": "Shipping delay", "count": 5, "theme": "Carrier delays" },
+    { "type": "Wrong size", "count": 3, "theme": "Size chart confusion" },
+    { "type": "Refund request", "count": 4, "theme": "Fit or late delivery" },
+    { "type": "Product question", "count": 2, "theme": "Hoodie material" },
+    { "type": "Bulk order inquiry", "count": 1, "theme": "Campus group order" }
+  ],
+  "tickets": [
+    {
+      "id": "T-001",
+      "customer": "Maya Johnson",
+      "issue": "Wrong size received — got small instead of medium",
+      "type": "Wrong size",
+      "urgency": "medium",
+      "status": "Open",
+      "draft": "I'm sorry about the sizing mix-up. We'll ship the correct size today and send a prepaid return label for the incorrect item. You should receive a tracking number within 24 hours.",
+      "resolution": "Replacement"
+    },
+    {
+      "id": "T-002",
+      "customer": "Andre Lee",
+      "issue": "Hoodie arrived 5 days late — expected 3-day shipping",
+      "type": "Shipping delay",
+      "urgency": "medium",
+      "status": "Open",
+      "draft": "I'm sorry the order arrived later than expected. I can offer 15% off your next order as an apology for the inconvenience. Your satisfaction matters to us.",
+      "resolution": "Discount"
+    },
+    {
+      "id": "T-003",
+      "customer": "Priya Shah",
+      "issue": "Wants a full refund — hoodie fit too large",
+      "type": "Refund request",
+      "urgency": "medium",
+      "status": "Open",
+      "draft": "I understand the fit did not work out. I'll help process your return and refund once the return scan is active. Please use the prepaid label attached to this email.",
+      "resolution": "Return / Refund"
+    },
+    {
+      "id": "T-004",
+      "customer": "Campus AI Club",
+      "issue": "Asking about a 75-shirt bulk order for an event",
+      "type": "Bulk order inquiry",
+      "urgency": "high",
+      "status": "Open",
+      "draft": "We can support a 75-shirt order and provide a quote based on sizes, timeline, and shipping location. For orders this size, we offer $22 per shirt. Please send your size breakdown and event date.",
+      "resolution": "Sales follow-up"
+    },
+    {
+      "id": "T-005",
+      "customer": "James Ortega",
+      "issue": "Asking about hoodie fabric — is it 100% cotton?",
+      "type": "Product question",
+      "urgency": "low",
+      "status": "Open",
+      "draft": "Great question! Our Built With AI Hoodie is made from an 80% cotton, 20% polyester blend for a comfortable, durable fit. Let us know if you have any other questions.",
+      "resolution": "Information"
+    }
+  ],
+  "improvements": [
+    "Move size chart higher on product pages to reduce sizing-related complaints.",
+    "Add a delivery expectation banner at checkout to set shipping timelines.",
+    "Create saved response templates for wrong-size and delayed-order issues.",
+    "Flag customers with repeat complaints automatically for priority handling."
+  ]
+}

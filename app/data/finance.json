@@ -1,0 +1,37 @@
+{
+  "date": "2026-05-21",
+  "pnl": {
+    "grossSales": 3490,
+    "refunds": -148,
+    "netSales": 3342,
+    "cogs": -1415,
+    "grossProfit": 1927,
+    "grossMargin": 0.577,
+    "adSpend": -620,
+    "shippingCosts": -310,
+    "contractorCosts": -450,
+    "softwareCosts": -95,
+    "operatingProfit": 452
+  },
+  "cashTracker": {
+    "cashBalance": 18420,
+    "avgMonthlyFixedCosts": 6800,
+    "avgMonthlyNetBurn": 2750,
+    "estimatedRunwayMonths": 6.7,
+    "accountsPayableThisWeek": 2400,
+    "expectedIncomingCashThisWeek": 12100,
+    "proposedHoodieReorderCost": 3900
+  },
+  "warnings": [
+    "Hoodie reorder is needed operationally, but it will reduce short-term cash by approximately $3,900.",
+    "Tote campaign should be paused because it is not producing enough return on ad spend.",
+    "Refund volume is higher than normal and should be reduced through product page improvements.",
+    "Email revenue is strong — it generated $840 without any direct ad spend."
+  ],
+  "costSavingActions": [
+    { "action": "Pause tote ad campaign", "estimatedWeeklyImpact": 700 },
+    { "action": "Reduce rush shipping", "estimatedWeeklyImpact": 180 },
+    { "action": "Improve size chart to lower refund rate", "estimatedWeeklyImpact": 90 },
+    { "action": "Bundle slow-moving totes to improve inventory turnover", "estimatedWeeklyImpact": 120 }
+  ]
+}

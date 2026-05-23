@@ -1,0 +1,100 @@
+{
+  "products": [
+    {
+      "product": "Built With AI Hoodie",
+      "inStock": 61,
+      "reorderPoint": 75,
+      "forecastDemand7Days": 118,
+      "status": "Reorder now",
+      "risk": "high"
+    },
+    {
+      "product": "Prompt Engineer Tee",
+      "inStock": 118,
+      "reorderPoint": 100,
+      "forecastDemand7Days": 96,
+      "status": "Watch",
+      "risk": "medium"
+    },
+    {
+      "product": "I Love AI Tee",
+      "inStock": 204,
+      "reorderPoint": 80,
+      "forecastDemand7Days": 62,
+      "status": "Healthy",
+      "risk": "low"
+    },
+    {
+      "product": "Hallucination-Free Hat",
+      "inStock": 73,
+      "reorderPoint": 70,
+      "forecastDemand7Days": 42,
+      "status": "Watch",
+      "risk": "medium"
+    },
+    {
+      "product": "Ship It With AI Tote",
+      "inStock": 150,
+      "reorderPoint": 60,
+      "forecastDemand7Days": 28,
+      "status": "Healthy",
+      "risk": "low"
+    }
+  ],
+  "suppliers": [
+    {
+      "name": "StitchHub Apparel",
+      "products": "Hoodies, tees",
+      "leadTimeDays": 9,
+      "qualityScore": 92,
+      "onTimeRate": 86,
+      "risk": "medium",
+      "note": "Currently delayed — partial shipment requested"
+    },
+    {
+      "name": "PrintFlow Direct",
+      "products": "Hats, totes",
+      "leadTimeDays": 6,
+      "qualityScore": 88,
+      "onTimeRate": 91,
+      "risk": "low",
+      "note": "Reliable — no current issues"
+    },
+    {
+      "name": "CampusPrint Supply",
+      "products": "Backup tees",
+      "leadTimeDays": 12,
+      "qualityScore": 84,
+      "onTimeRate": 78,
+      "risk": "medium",
+      "note": "Backup supplier only"
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "product": "Built With AI Hoodie",
+      "suggestedUnits": 150,
+      "supplier": "StitchHub Apparel",
+      "estimatedCost": 3900,
+      "reason": "High forecast demand — will stockout in ~4 days",
+      "urgency": "high"
+    },
+    {
+      "product": "Prompt Engineer Tee",
+      "suggestedUnits": 100,
+      "supplier": "StitchHub Apparel",
+      "estimatedCost": 1200,
+      "reason": "Prevent future stockout — reorder now to allow lead time",
+      "urgency": "medium"
+    },
+    {
+      "product": "Hallucination-Free Hat",
+      "suggestedUnits": 60,
+      "supplier": "PrintFlow Direct",
+      "estimatedCost": 540,
+      "reason": "Near reorder point — order before running low",
+      "urgency": "medium"
+    }
+  ],
+  "aiRecommendation": "Approve the hoodie reorder today and request a partial shipment because demand is likely to exceed available inventory. Prepare a smaller Prompt Engineer Tee reorder, but do not reorder totes because demand is weak."
+}

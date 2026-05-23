@@ -1,0 +1,58 @@
+[
+  {
+    "task": "Email review",
+    "manualWorkflow": "Read every email manually, prioritize by gut feel, write replies from scratch",
+    "aiWorkflow": "AI summarizes and ranks urgency, flags high-impact emails, drafts replies for review",
+    "timeSavedPerDay": "45 min/day",
+    "businessValue": "Faster decisions, fewer missed messages"
+  },
+  {
+    "task": "Customer service",
+    "manualWorkflow": "Write every customer reply from scratch, manually track issue types",
+    "aiWorkflow": "AI drafts responses for review, clusters complaints by type, suggests root cause fixes",
+    "timeSavedPerDay": "60 min/day",
+    "businessValue": "Faster support, consistent tone, better CSAT"
+  },
+  {
+    "task": "Sales reporting",
+    "manualWorkflow": "Export data from Shopify, build spreadsheet, manually analyze trends",
+    "aiWorkflow": "AI creates daily summary with insights, highlights winners and underperformers",
+    "timeSavedPerDay": "30 min/day",
+    "businessValue": "Clearer insights, no manual spreadsheet work"
+  },
+  {
+    "task": "Demand forecasting",
+    "manualWorkflow": "Update spreadsheet model manually, guess reorder timing",
+    "aiWorkflow": "AI explains demand risks, connects inventory to sales velocity and lead times",
+    "timeSavedPerDay": "45 min/week",
+    "businessValue": "Better planning, fewer stockouts"
+  },
+  {
+    "task": "Inventory management",
+    "manualWorkflow": "Check each SKU manually, compare to rough mental estimate",
+    "aiWorkflow": "AI flags reorder points, calculates days of stock remaining, suggests purchase orders",
+    "timeSavedPerDay": "30 min/day",
+    "businessValue": "Fewer stockouts, better cash planning"
+  },
+  {
+    "task": "Marketing analysis",
+    "manualWorkflow": "Compare campaigns manually, update budget spreadsheet by hand",
+    "aiWorkflow": "AI recommends budget shifts, identifies ROAS winners, flags underperformers",
+    "timeSavedPerDay": "45 min/day",
+    "businessValue": "Better ROAS, faster budget decisions"
+  },
+  {
+    "task": "Meeting notes",
+    "manualWorkflow": "Manual note-taking during meetings, write up action items afterward",
+    "aiWorkflow": "AI creates structured summary, action items with owners, decisions list, and follow-up email",
+    "timeSavedPerDay": "30 min/meeting",
+    "businessValue": "Better execution, nothing falls through the cracks"
+  },
+  {
+    "task": "Finance review",
+    "manualWorkflow": "Review P&L manually, calculate margins by hand, look for anomalies",
+    "aiWorkflow": "AI flags warning signs, explains tradeoffs, connects financial data to operating decisions",
+    "timeSavedPerDay": "30 min/day",
+    "businessValue": "Better cash control, faster financial decisions"
+  }
+]

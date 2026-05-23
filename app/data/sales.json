@@ -1,0 +1,44 @@
+{
+  "date": "2026-05-21",
+  "grossSales": 3490,
+  "refunds": 148,
+  "netSales": 3342,
+  "orders": 92,
+  "sessions": 4850,
+  "conversionRate": 0.019,
+  "averageOrderValue": 37.93,
+  "returningCustomerRate": 0.21,
+  "channels": [
+    { "name": "Paid Social", "revenue": 1940 },
+    { "name": "Email", "revenue": 840 },
+    { "name": "Organic", "revenue": 710 }
+  ],
+  "products": [
+    { "name": "Prompt Engineer Tee", "units": 34, "price": 32, "revenue": 1088, "cost": 12.00, "margin": 0.625 },
+    { "name": "Built With AI Hoodie", "units": 27, "price": 58, "revenue": 1566, "cost": 26.00, "margin": 0.552 },
+    { "name": "I Love AI Tee", "units": 19, "price": 28, "revenue": 532, "cost": 10.50, "margin": 0.625 },
+    { "name": "Hallucination-Free Hat", "units": 8, "price": 26, "revenue": 208, "cost": 9.00, "margin": 0.654 },
+    { "name": "Ship It With AI Tote", "units": 4, "price": 24, "revenue": 96, "cost": 8.25, "margin": 0.656 }
+  ],
+  "weeklyTrend": [
+    { "date": "May 15", "revenue": 2840, "orders": 75 },
+    { "date": "May 16", "revenue": 2650, "orders": 70 },
+    { "date": "May 17", "revenue": 1980, "orders": 52 },
+    { "date": "May 18", "revenue": 2210, "orders": 58 },
+    { "date": "May 19", "revenue": 2590, "orders": 68 },
+    { "date": "May 20", "revenue": 2958, "orders": 78 },
+    { "date": "May 21", "revenue": 3490, "orders": 92 }
+  ],
+  "refundsByType": [
+    { "type": "Wrong size", "count": 2, "amount": 76 },
+    { "type": "Late delivery", "count": 1, "amount": 32 },
+    { "type": "Changed mind", "count": 1, "amount": 40 }
+  ],
+  "insights": [
+    "Built With AI Hoodie generated the most revenue despite selling fewer units than the Prompt Engineer Tee.",
+    "Prompt Engineer Tee sold the most units and should remain a core product.",
+    "Ship It With AI Tote is underperforming and should not receive additional ad spend today.",
+    "Paid social drove the largest revenue share, but email produced strong revenue without paid media cost.",
+    "Conversion rate is slightly below the 2.2% goal, which may be connected to product page friction or sizing concerns."
+  ]
+}

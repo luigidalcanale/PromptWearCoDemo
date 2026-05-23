@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "date": "2026-05-21",
+    "businessIssue": "Hoodie inventory running low — projected stockout in 4 days",
+    "aiRecommendation": "Reorder 150 units from StitchHub immediately to cover 7-day forecast demand",
+    "humanDecision": "Approved reorder",
+    "humanNote": "Approved — cash position supports it and risk is too high to wait",
+    "expectedImpact": "Avoid stockout, maintain $1,566/day in hoodie revenue",
+    "lessonLearned": "AI helped connect real-time demand data to inventory levels before a human would have caught it"
+  },
+  {
+    "id": 2,
+    "date": "2026-05-21",
+    "businessIssue": "Tote campaign generating 1.0x ROAS — barely breaking even",
+    "aiRecommendation": "Pause tote campaign and reallocate budget to hoodie campaign",
+    "humanDecision": "Paused campaign",
+    "humanNote": "Agreed — no reason to continue spending on a campaign that isn't working",
+    "expectedImpact": "Save approximately $700/week in wasted ad spend",
+    "lessonLearned": "Not all traffic converts. ROAS below 2.0x on a product with low margin is a clear stop signal"
+  },
+  {
+    "id": 3,
+    "date": "2026-05-21",
+    "businessIssue": "Sizing complaints increasing — 3 of 14 tickets are wrong-size or fit issues",
+    "aiRecommendation": "Move size chart higher on product pages and create a saved response template",
+    "humanDecision": "Assigned web update to contractor",
+    "humanNote": "Small fix, high impact — should have been done earlier",
+    "expectedImpact": "Reduce sizing-related refunds and improve conversion rate",
+    "lessonLearned": "Customer service data often reveals product page problems that analytics alone miss"
+  },
+  {
+    "id": 4,
+    "date": "2026-05-21",
+    "businessIssue": "Bulk order inquiry from Campus AI Club — 75 shirts, time-sensitive",
+    "aiRecommendation": "Respond within 24 hours with quote to secure the sale",
+    "humanDecision": "Sent quote — $22/shirt, $1,650 total",
+    "humanNote": "Fast response matters for bulk orders. Quote sent same day",
+    "expectedImpact": "Potential $1,650 sale with good margin",
+    "lessonLearned": "AI flagged this as high-urgency — without that signal it might have been delayed"
+  },
+  {
+    "id": 5,
+    "date": "2026-05-21",
+    "businessIssue": "Hoodie ad outperforming all other campaigns at 3.8x ROAS",
+    "aiRecommendation": "Increase hoodie campaign budget by 20% for a 48-hour test",
+    "humanDecision": "Approved 48-hour test",
+    "humanNote": "Scaling a winner is lower risk than finding a new campaign. 48-hour window gives data without overcommitting",
+    "expectedImpact": "Estimated 15–20% increase in hoodie revenue over test period",
+    "lessonLearned": "Scale winners carefully — budget increase is time-limited to evaluate before making permanent"
+  }
+]

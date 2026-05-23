@@ -1,0 +1,55 @@
+{
+  "generatedOn": "2026-05-21",
+  "explanation": "The forecast is driven by current sales velocity, paid social campaign performance, email revenue, and product-level demand. The highest risk is the Built With AI Hoodie because forecasted demand exceeds current inventory. The Prompt Engineer Tee is not in immediate danger, but reorder planning should begin now.",
+  "weeklyRevenue": [
+    { "date": "May 22", "revenue": 3620, "orders": 96 },
+    { "date": "May 23", "revenue": 3440, "orders": 91 },
+    { "date": "May 24", "revenue": 3210, "orders": 85 },
+    { "date": "May 25", "revenue": 2980, "orders": 79 },
+    { "date": "May 26", "revenue": 3275, "orders": 86 },
+    { "date": "May 27", "revenue": 3510, "orders": 93 },
+    { "date": "May 28", "revenue": 3690, "orders": 98 }
+  ],
+  "productDemand": [
+    {
+      "product": "Built With AI Hoodie",
+      "currentInventory": 61,
+      "forecastDemand7Days": 118,
+      "estimatedDaysLeft": 4,
+      "risk": "high",
+      "formulaNote": "27 units × 0.62 adjusted trend × 7 days ≈ 118 units"
+    },
+    {
+      "product": "Prompt Engineer Tee",
+      "currentInventory": 118,
+      "forecastDemand7Days": 96,
+      "estimatedDaysLeft": 9,
+      "risk": "medium",
+      "formulaNote": "34 units × 0.40 adjusted trend × 7 days ≈ 96 units"
+    },
+    {
+      "product": "I Love AI Tee",
+      "currentInventory": 204,
+      "forecastDemand7Days": 62,
+      "estimatedDaysLeft": 23,
+      "risk": "low",
+      "formulaNote": "19 units × 0.47 adjusted trend × 7 days ≈ 62 units"
+    },
+    {
+      "product": "Hallucination-Free Hat",
+      "currentInventory": 73,
+      "forecastDemand7Days": 42,
+      "estimatedDaysLeft": 12,
+      "risk": "medium",
+      "formulaNote": "8 units × 0.75 adjusted trend × 7 days ≈ 42 units"
+    },
+    {
+      "product": "Ship It With AI Tote",
+      "currentInventory": 150,
+      "forecastDemand7Days": 28,
+      "estimatedDaysLeft": 38,
+      "risk": "low",
+      "formulaNote": "4 units × 1.00 adjusted trend × 7 days ≈ 28 units"
+    }
+  ]
+}

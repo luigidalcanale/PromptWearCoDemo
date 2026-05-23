@@ -1,0 +1,98 @@
+{
+  "campaigns": [
+    {
+      "name": "Built With AI Hoodie Launch",
+      "channel": "Instagram / TikTok",
+      "spend": 340,
+      "revenue": 1292,
+      "roas": 3.8,
+      "status": "Scale",
+      "statusLevel": "healthy"
+    },
+    {
+      "name": "Prompt Engineer Tee Retargeting",
+      "channel": "Meta Ads",
+      "spend": 180,
+      "revenue": 612,
+      "roas": 3.4,
+      "status": "Continue",
+      "statusLevel": "healthy"
+    },
+    {
+      "name": "AI Tote Bag Promo",
+      "channel": "TikTok",
+      "spend": 100,
+      "revenue": 96,
+      "roas": 1.0,
+      "status": "Pause",
+      "statusLevel": "risk"
+    },
+    {
+      "name": "Email: May AI Drop",
+      "channel": "Email",
+      "spend": 0,
+      "revenue": 840,
+      "roas": null,
+      "status": "Strong",
+      "statusLevel": "healthy"
+    }
+  ],
+  "abTests": [
+    {
+      "test": "Hoodie Ad Hook",
+      "versionA": "1.8% CTR",
+      "versionB": "2.7% CTR",
+      "winner": "Version B",
+      "metric": "CTR"
+    },
+    {
+      "test": "Email Subject Line",
+      "versionA": "31% open rate",
+      "versionB": "38% open rate",
+      "winner": "Version B",
+      "metric": "Open Rate"
+    },
+    {
+      "test": "Product Page CTA",
+      "versionA": "2.1% conversion",
+      "versionB": "2.5% conversion",
+      "winner": "Version B",
+      "metric": "Conversion"
+    }
+  ],
+  "segments": [
+    {
+      "segment": "College AI Enthusiasts",
+      "behavior": "Buys tees and hoodies",
+      "opportunity": "Bundle offer"
+    },
+    {
+      "segment": "Tech Workers",
+      "behavior": "Higher AOV, repeat buyers",
+      "opportunity": "Premium hoodie campaign"
+    },
+    {
+      "segment": "Gift Buyers",
+      "behavior": "Buys hats and totes",
+      "opportunity": "Gift guide email"
+    },
+    {
+      "segment": "Returning Customers",
+      "behavior": "Responds to email",
+      "opportunity": "Loyalty discount"
+    }
+  ],
+  "contentIdeas": [
+    "What your AI shirt says about your personality",
+    "The unofficial uniform of prompt engineers",
+    "Built With AI: behind the design",
+    "AI merch for students, builders, and tech teams",
+    "Prompt Engineer starter pack"
+  ],
+  "suggestedActions": [
+    { "action": "Increase hoodie campaign budget by 20%", "reason": "Best ROAS at 3.8x" },
+    { "action": "Pause tote campaign", "reason": "1.0x ROAS — not breaking even on ad spend" },
+    { "action": "Send bundle email to AI Enthusiasts segment", "reason": "Email revenue is strong with $0 spend" },
+    { "action": "Test product page size chart placement", "reason": "Conversion rate below 2.2% goal" }
+  ]
+}

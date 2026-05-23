@@ -1,0 +1,63 @@
+{
+  "date": "2026-05-21",
+  "businessName": "PromptWear Co.",
+  "snapshot": "Thursday, May 21, 2026",
+  "summary": "PromptWear Co. had a strong sales day with $3,490 in gross sales across 92 orders. The Built With AI Hoodie and Prompt Engineer Tee drove most of the revenue. The main business risk is inventory: hoodie stock may run out within the next few days if demand continues. Customer complaints are mostly tied to shipping delays and sizing confusion.",
+  "metrics": [
+    { "label": "Gross Sales", "value": "$3,490", "trend": "+18% vs. yesterday", "status": "healthy" },
+    { "label": "Net Sales", "value": "$3,342", "trend": "After $148 refunds", "status": "healthy" },
+    { "label": "Orders", "value": "92", "trend": "Strong day", "status": "healthy" },
+    { "label": "Website Sessions", "value": "4,850", "trend": "Strong traffic", "status": "healthy" },
+    { "label": "Conversion Rate", "value": "1.9%", "trend": "Below 2.2% goal", "status": "warning" },
+    { "label": "Avg Order Value", "value": "$37.93", "trend": "Stable", "status": "healthy" },
+    { "label": "Cash Balance", "value": "$18,420", "trend": "Healthy short term", "status": "healthy" },
+    { "label": "Customer Satisfaction", "value": "4.3 / 5", "trend": "Watch sizing complaints", "status": "warning" },
+    { "label": "Low Inventory SKUs", "value": "2", "trend": "Needs action", "status": "risk" },
+    { "label": "Open Tickets", "value": "14", "trend": "Moderate", "status": "warning" },
+    { "label": "Refund Requests", "value": "4", "trend": "Elevated", "status": "warning" },
+    { "label": "Ad Spend Today", "value": "$620", "trend": "Within budget", "status": "healthy" }
+  ],
+  "priorities": [
+    {
+      "priority": 1,
+      "issue": "Reorder Built With AI Hoodie",
+      "reason": "Current inventory will not cover forecasted demand",
+      "action": "Approve 150-unit reorder",
+      "urgency": "high"
+    },
+    {
+      "priority": 2,
+      "issue": "Review Prompt Engineer Tee stock",
+      "reason": "Demand is steady and inventory is tightening",
+      "action": "Prepare 100-unit reorder",
+      "urgency": "medium"
+    },
+    {
+      "priority": 3,
+      "issue": "Respond to supplier delay",
+      "reason": "Delayed blanks could create stockout risk",
+      "action": "Request partial shipment",
+      "urgency": "high"
+    },
+    {
+      "priority": 4,
+      "issue": "Fix sizing issue",
+      "reason": "Sizing complaints are driving refunds",
+      "action": "Move size chart higher on product pages",
+      "urgency": "medium"
+    },
+    {
+      "priority": 5,
+      "issue": "Scale hoodie ad carefully",
+      "reason": "Hoodie campaign has strongest ROAS at 3.8x",
+      "action": "Increase budget by 20% for 48 hours",
+      "urgency": "medium"
+    }
+  ],
+  "risks": [
+    { "label": "Hoodie stockout in ~4 days", "level": "high" },
+    { "label": "Conversion rate below 2.2% goal", "level": "medium" },
+    { "label": "Refund rate elevated at 4.3%", "level": "medium" },
+    { "label": "Supplier delay on hoodie blanks", "level": "high" }
+  ]
+}
