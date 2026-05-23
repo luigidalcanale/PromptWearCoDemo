@@ -2,28 +2,73 @@
 
 import { useEffect, useState } from "react";
 import { Activity } from "lucide-react";
+import { USERS } from "@/lib/users";
 
-type Event = { id: number; text: string; tone: "sale" | "info" | "alert" | "system" };
+type Tone = "sale" | "info" | "alert" | "system";
+type Event = { id: number; text: string; tone: Tone };
 
-const POOL: Omit<Event, "id">[] = [
-  { text: "New order #4892 — Built With AI Hoodie · $58", tone: "sale" },
-  { text: "New order #4893 — Prompt Engineer Tee · $32", tone: "sale" },
-  { text: "Instagram referral → 12 sessions in the last 5 min", tone: "info" },
-  { text: "Cart abandoned — recovery email queued ($46)", tone: "info" },
-  { text: "Low stock alert — Built With AI Hoodie (8 left)", tone: "alert" },
-  { text: "New order #4894 — I Love AI Tee · $28", tone: "sale" },
-  { text: "AI drafted reply to Maya Johnson (sizing issue)", tone: "system" },
-  { text: "Customer reviewed Built With AI Hoodie — 5★", tone: "info" },
-  { text: "Ad spend pacing 92% of daily budget", tone: "info" },
-  { text: "New order #4895 — Hallucination-Free Hat · $26", tone: "sale" },
-  { text: "Refund processed — Ship It With AI Tote · $24", tone: "alert" },
-  { text: "Returning customer Jordan Lee placed order #4896", tone: "sale" },
-  { text: "Shopify checkout error rate dropped to 0.2%", tone: "system" },
-  { text: "New TikTok mention — 1.4k views (organic)", tone: "info" },
-  { text: "New order #4897 — Prompt Engineer Tee · $32", tone: "sale" },
+const SALE_PRODUCTS = [
+  ["Built With AI Hoodie", 58],
+  ["Prompt Engineer Tee", 32],
+  ["I Love AI Tee", 28],
+  ["Hallucination-Free Hat", 26],
+  ["Ship It With AI Tote", 24],
+  ["RAG Pipeline Crewneck", 64],
+] as const;
+
+const TEMPLATES: { build: () => Omit<Event, "id">; weight: number }[] = [
+  {
+    weight: 5,
+    build: () => {
+      const [name, price] = SALE_PRODUCTS[Math.floor(Math.random() * SALE_PRODUCTS.length)];
+      const order = 4890 + Math.floor(Math.random() * 80);
+      const user = USERS[Math.floor(Math.random() * USERS.length)];
+      return {
+        text: `New order #${order} — ${name} · $${price} (${user.city})`,
+        tone: "sale",
+      };
+    },
+  },
+  {
+    weight: 3,
+    build: () => {
+      const user = USERS[Math.floor(Math.random() * USERS.length)];
+      return { text: `New signup from ${user.city}, ${user.country} — ${user.name}`, tone: "info" };
+    },
+  },
+  {
+    weight: 2,
+    build: () => {
+      const amt = 30 + Math.floor(Math.random() * 220);
+      const acme = ["acme.co", "north.studio", "loop.dev", "brightlane.io"][Math.floor(Math.random() * 4)];
+      return { text: `Stripe charge $${amt} from ${acme}`, tone: "sale" };
+    },
+  },
+  { weight: 2, build: () => ({ text: "Instagram referral → 12 sessions in last 5 min", tone: "info" }) },
+  { weight: 2, build: () => ({ text: "Cart abandoned — recovery email queued ($46)", tone: "info" }) },
+  { weight: 1, build: () => ({ text: "Low stock alert — Built With AI Hoodie (8 left)", tone: "alert" }) },
+  { weight: 1, build: () => ({ text: "AI drafted reply to support ticket #T-2041", tone: "system" }) },
+  { weight: 1, build: () => ({ text: "Ad spend pacing 92% of daily budget", tone: "info" }) },
+  { weight: 1, build: () => ({ text: "Shopify checkout error rate dropped to 0.2%", tone: "system" }) },
+  {
+    weight: 1,
+    build: () => {
+      const user = USERS[Math.floor(Math.random() * USERS.length)];
+      return { text: `${user.name} reviewed Built With AI Hoodie — 5★`, tone: "info" };
+    },
+  },
 ];
 
-const TONE_STYLES: Record<Event["tone"], string> = {
+function pickEvent(): Omit<Event, "id"> {
+  const total = TEMPLATES.reduce((s, t) => s + t.weight, 0);
+  let r = Math.random() * total;
+  for (const t of TEMPLATES) {
+    if ((r -= t.weight) <= 0) return t.build();
+  }
+  return TEMPLATES[0].build();
+}
+
+const TONE_STYLES: Record<Tone, string> = {
   sale: "text-green-700 dark:text-green-300",
   info: "text-blue-700 dark:text-blue-300",
   alert: "text-amber-700 dark:text-amber-300",
@@ -37,8 +82,7 @@ export function ActivityTicker() {
 
   useEffect(() => {
     const tick = () => {
-      const pick = POOL[Math.floor(Math.random() * POOL.length)];
-      setCurrent({ ...pick, id: counter++ });
+      setCurrent({ ...pickEvent(), id: counter++ });
     };
     tick();
     const id = setInterval(tick, 4200 + Math.random() * 2000);
@@ -63,3 +107,7 @@ export function ActivityTicker() {
     </div>
   );
 }
+
+/* Re-export the picker so the dashboard feed can share it. */
+export { pickEvent };
+export type { Event as TickerEvent, Tone as TickerTone };

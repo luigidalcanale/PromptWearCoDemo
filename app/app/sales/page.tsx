@@ -5,35 +5,22 @@ import { PageHeader } from "@/components/PageHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { AIInsightBox } from "@/components/AIInsightBox";
 import { LastUpdated } from "@/components/LastUpdated";
+import { Sparkline, trendFromSeed } from "@/components/Sparkline";
+import { LiveStatusDot } from "@/components/LiveStatusDot";
+import { useLiveValue } from "@/lib/useLiveValue";
 import salesData from "@/data/sales.json";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line, AreaChart, Area,
 } from "recharts";
 
 const CHART_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
+  "var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-5)",
 ];
 
-const fmt = (v: number) => `$${v.toLocaleString()}`;
+const fmt = (v: number) => `$${Math.round(v).toLocaleString()}`;
 
-type Period = "today" | "yesterday" | "week";
+type Period = "24h" | "7d" | "30d" | "90d";
 
 const todayTotals = {
   gross: salesData.grossSales,
@@ -43,47 +30,74 @@ const todayTotals = {
   aov: salesData.averageOrderValue,
 };
 
-const yesterday = salesData.weeklyTrend[salesData.weeklyTrend.length - 2];
-const last7 = salesData.weeklyTrend.slice(-7);
-const weekTotal = last7.reduce((s, d) => s + d.revenue, 0);
-const weekOrders = last7.reduce((s, d) => s + d.orders, 0);
+const weekly = salesData.weeklyTrend;
+const sum = (arr: { revenue: number; orders: number }[], k: "revenue" | "orders") =>
+  arr.reduce((s, d) => s + d[k], 0);
+
+const last7 = weekly.slice(-7);
+const week = { rev: sum(last7, "revenue"), ord: sum(last7, "orders") };
+
+// Synthesize 30d / 90d from the 14d series (just scale + a touch of noise).
+const synth30 = (() => {
+  const avg = weekly.reduce((s, d) => s + d.revenue, 0) / weekly.length;
+  const ordAvg = weekly.reduce((s, d) => s + d.orders, 0) / weekly.length;
+  return {
+    rev: Math.round(avg * 30 * 1.02),
+    ord: Math.round(ordAvg * 30 * 1.02),
+  };
+})();
+const synth90 = (() => {
+  const avg = weekly.reduce((s, d) => s + d.revenue, 0) / weekly.length;
+  const ordAvg = weekly.reduce((s, d) => s + d.orders, 0) / weekly.length;
+  return {
+    rev: Math.round(avg * 90 * 0.96),
+    ord: Math.round(ordAvg * 90 * 0.96),
+  };
+})();
 
 const channelTotal = salesData.channels.reduce((s, c) => s + c.revenue, 0);
 
 const periodData = (p: Period) => {
-  if (p === "yesterday") {
-    return {
-      gross: yesterday.revenue,
-      net: Math.round(yesterday.revenue * 0.957),
-      orders: yesterday.orders,
-      conv: 0.018,
-      aov: yesterday.revenue / yesterday.orders,
-      label: "vs. day before",
-    };
+  if (p === "7d") return { gross: week.rev, orders: week.ord, conv: 0.019, aov: week.rev / week.ord, label: "Rolling 7 days" };
+  if (p === "30d") return { gross: synth30.rev, orders: synth30.ord, conv: 0.021, aov: synth30.rev / synth30.ord, label: "Rolling 30 days" };
+  if (p === "90d") return { gross: synth90.rev, orders: synth90.ord, conv: 0.020, aov: synth90.rev / synth90.ord, label: "Rolling 90 days" };
+  return { gross: todayTotals.gross, orders: todayTotals.orders, conv: todayTotals.conv, aov: todayTotals.aov, label: "+18% vs. yesterday" };
+};
+
+// Re-bucket chart data to roughly match the selected period
+const chartData = (p: Period) => {
+  if (p === "24h") return salesData.hourlyToday.map((h) => ({ x: h.hour, revenue: h.revenue }));
+  if (p === "7d")
+    return weekly.slice(-7).map((d) => ({ x: d.date, revenue: d.revenue }));
+  if (p === "30d") {
+    // Repeat 14d series scaled to produce a 30-point ribbon
+    const out: { x: string; revenue: number }[] = [];
+    for (let i = 0; i < 30; i++) {
+      const base = weekly[i % weekly.length];
+      out.push({ x: `D-${30 - i}`, revenue: Math.round(base.revenue * (0.92 + Math.random() * 0.16)) });
+    }
+    return out;
   }
-  if (p === "week") {
-    return {
-      gross: weekTotal,
-      net: Math.round(weekTotal * 0.957),
-      orders: weekOrders,
-      conv: 0.019,
-      aov: weekTotal / weekOrders,
-      label: "rolling 7 days",
-    };
+  // 90d weekly buckets
+  const out: { x: string; revenue: number }[] = [];
+  for (let w = 0; w < 13; w++) {
+    out.push({ x: `W-${13 - w}`, revenue: Math.round(sum(weekly, "revenue") * (0.45 + Math.random() * 0.15)) });
   }
-  return {
-    gross: todayTotals.gross,
-    net: todayTotals.net,
-    orders: todayTotals.orders,
-    conv: todayTotals.conv,
-    aov: todayTotals.aov,
-    label: "+18% vs. yesterday",
-  };
+  return out;
 };
 
 export default function SalesDashboardPage() {
-  const [period, setPeriod] = useState<Period>("today");
+  const [period, setPeriod] = useState<Period>("24h");
   const d = periodData(period);
+
+  // Live numbers for "today" view; other periods stay static since they're rollups.
+  const liveGross = useLiveValue(d.gross, { drift: 0.005 });
+  const liveOrders = useLiveValue(d.orders, { drift: 0.005 });
+  const liveSessions = useLiveValue(salesData.sessions, { drift: 0.006 });
+
+  const showLive = period === "24h";
+  const grossValue = showLive ? liveGross : d.gross;
+  const ordersValue = showLive ? liveOrders : d.orders;
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto">
@@ -91,12 +105,17 @@ export default function SalesDashboardPage() {
         title="Sales Dashboard"
         subtitle={`PromptWear Co. · ${salesData.date}`}
         badge="Today's Report"
-        actions={<LastUpdated minutesAgo={2} />}
+        actions={
+          <div className="flex items-center gap-3">
+            <LiveStatusDot label="" />
+            <LastUpdated minutesAgo={2} />
+          </div>
+        }
       />
 
-      {/* Period toggle */}
+      {/* Period toggle — 24h / 7d / 30d / 90d */}
       <div className="no-print inline-flex rounded-lg border border-border bg-card p-1 mb-6">
-        {(["today", "yesterday", "week"] as Period[]).map((p) => (
+        {(["24h", "7d", "30d", "90d"] as Period[]).map((p) => (
           <button
             key={p}
             onClick={() => setPeriod(p)}
@@ -106,30 +125,36 @@ export default function SalesDashboardPage() {
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            {p === "today" ? "Today" : p === "yesterday" ? "Yesterday" : "Last 7 Days"}
+            {p === "24h" ? "Last 24h" : p === "7d" ? "Last 7d" : p === "30d" ? "Last 30d" : "Last 90d"}
           </button>
         ))}
       </div>
 
-      {/* Key metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-        <MetricCard label="Gross Sales" value={fmt(d.gross)} trend={d.label} status="healthy" direction="up" />
-        <MetricCard label="Net Sales" value={fmt(d.net)} trend={`After refunds`} status="healthy" />
-        <MetricCard label="Orders" value={String(d.orders)} trend={period === "week" ? "7-day total" : "Strong day"} status="healthy" direction="up" />
-        <MetricCard label="Conversion Rate" value={`${(d.conv * 100).toFixed(1)}%`} trend="Below 2.2% goal" status="warning" direction="down" />
-        <MetricCard label="Avg Order Value" value={`$${d.aov.toFixed(2)}`} trend="Stable" status="healthy" direction="flat" />
+        <MetricCard
+          label="Gross Sales"
+          value={fmt(grossValue)}
+          numeric={grossValue}
+          format={(n) => fmt(n)}
+          trend={d.label}
+          status="healthy"
+          direction="up"
+          target={{ initial: Math.round(grossValue * 1.15), storageKey: `sales:gross:${period}`, format: (n) => fmt(n) }}
+        />
+        <MetricCard label="Net Sales" value={fmt(Math.round(grossValue * 0.957))} numeric={Math.round(grossValue * 0.957)} format={fmt} trend="After refunds" status="healthy" />
+        <MetricCard label="Orders" value={String(Math.round(ordersValue))} numeric={ordersValue} format={(n) => Math.round(n).toLocaleString()} trend={period === "24h" ? "Strong day" : d.label} status="healthy" direction="up" />
+        <MetricCard label="Conversion Rate" value={`${(d.conv * 100).toFixed(1)}%`} numeric={d.conv * 100} format={(n) => `${n.toFixed(1)}%`} trend="Below 2.2% goal" status="warning" direction="down" />
+        <MetricCard label="Avg Order Value" value={`$${d.aov.toFixed(2)}`} numeric={d.aov} format={(n) => `$${n.toFixed(2)}`} trend="Stable" status="healthy" direction="flat" />
       </div>
 
-      {/* Secondary stats: customers + cart */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-        <MetricCard label="New Customers" value={String(salesData.newCustomers)} trend="79% of orders" status="healthy" direction="up" />
-        <MetricCard label="Returning Customers" value={String(salesData.returningCustomers)} trend={`${(salesData.returningCustomerRate * 100).toFixed(0)}% of orders`} status="healthy" />
-        <MetricCard label="Abandoned Carts" value={String(salesData.abandonedCarts)} trend={`${fmt(salesData.abandonedCartValue)} value at risk`} status="warning" direction="down" />
-        <MetricCard label="Sessions" value={salesData.sessions.toLocaleString()} trend="Strong traffic" status="healthy" direction="up" />
+        <MetricCard label="New Customers" value={String(salesData.newCustomers)} numeric={salesData.newCustomers} trend="79% of orders" status="healthy" direction="up" />
+        <MetricCard label="Returning Customers" value={String(salesData.returningCustomers)} numeric={salesData.returningCustomers} trend={`${(salesData.returningCustomerRate * 100).toFixed(0)}% of orders`} status="healthy" />
+        <MetricCard label="Abandoned Carts" value={String(salesData.abandonedCarts)} numeric={salesData.abandonedCarts} trend={`${fmt(salesData.abandonedCartValue)} value at risk`} status="warning" direction="down" />
+        <MetricCard label="Sessions" value={salesData.sessions.toLocaleString()} numeric={showLive ? liveSessions : salesData.sessions} format={(n) => Math.round(n).toLocaleString()} trend="Strong traffic" status="healthy" direction="up" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {/* Revenue by channel — fixed labels */}
         <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-foreground mb-4">Revenue by Channel</h2>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 items-center">
@@ -156,7 +181,6 @@ export default function SalesDashboardPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            {/* Custom legend with percentages — readable and no overflow */}
             <ul className="sm:col-span-2 space-y-2.5">
               {salesData.channels.map((c, i) => {
                 const pct = (c.revenue / channelTotal) * 100;
@@ -177,19 +201,13 @@ export default function SalesDashboardPage() {
           </div>
         </div>
 
-        {/* Units sold by product */}
         <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
           <h2 className="text-sm font-semibold text-foreground mb-4">Units Sold by Product</h2>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={salesData.products} layout="vertical" margin={{ left: 10, right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
-              <YAxis
-                dataKey="name"
-                type="category"
-                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
-                width={140}
-              />
+              <YAxis dataKey="name" type="category" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} width={140} />
               <Tooltip />
               <Bar dataKey="units" fill="var(--chart-1)" radius={[0, 4, 4, 0]} />
             </BarChart>
@@ -197,12 +215,13 @@ export default function SalesDashboardPage() {
         </div>
       </div>
 
-      {/* Hourly today + 14-day trend */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-card text-card-foreground rounded-xl border border-border p-6 shadow-sm">
-          <h2 className="text-sm font-semibold text-foreground mb-4">Revenue by Hour — Today</h2>
+          <h2 className="text-sm font-semibold text-foreground mb-4">
+            Revenue {period === "24h" ? "by Hour — Today" : period === "7d" ? "by Day — Last 7d" : period === "30d" ? "by Day — Last 30d" : "by Week — Last 90d"}
+          </h2>
           <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={salesData.hourlyToday}>
+            <AreaChart data={chartData(period)}>
               <defs>
                 <linearGradient id="hourGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.4} />
@@ -210,7 +229,7 @@ export default function SalesDashboardPage() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-              <XAxis dataKey="hour" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
+              <XAxis dataKey="x" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
               <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickFormatter={(v) => `$${v}`} />
               <Tooltip formatter={(v) => fmt(Number(v))} />
               <Area type="monotone" dataKey="revenue" stroke="var(--chart-1)" strokeWidth={2.5} fill="url(#hourGradient)" />
@@ -232,7 +251,6 @@ export default function SalesDashboardPage() {
         </div>
       </div>
 
-      {/* Product table */}
       <div className="bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden mb-6">
         <div className="px-6 py-4 border-b border-border">
           <h2 className="text-sm font-semibold text-foreground">Best-Selling Products — Today</h2>
@@ -241,6 +259,7 @@ export default function SalesDashboardPage() {
           <thead>
             <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
               <th className="px-5 py-3 text-left">Product</th>
+              <th className="px-5 py-3 text-center">7-day Trend</th>
               <th className="px-5 py-3 text-right">Units</th>
               <th className="px-5 py-3 text-right">Price</th>
               <th className="px-5 py-3 text-right">Revenue</th>
@@ -251,6 +270,11 @@ export default function SalesDashboardPage() {
             {salesData.products.map((p) => (
               <tr key={p.name} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
                 <td className="px-5 py-3.5 font-medium text-foreground">{p.name}</td>
+                <td className="px-5 py-3.5">
+                  <div className="flex justify-center">
+                    <Sparkline data={trendFromSeed(p.name, 7, p.units, 0.35)} />
+                  </div>
+                </td>
                 <td className="px-5 py-3.5 text-right text-foreground tabular-nums">{p.units}</td>
                 <td className="px-5 py-3.5 text-right text-foreground tabular-nums">${p.price}</td>
                 <td className="px-5 py-3.5 text-right font-semibold text-foreground tabular-nums">${p.revenue.toLocaleString()}</td>
@@ -259,16 +283,16 @@ export default function SalesDashboardPage() {
             ))}
             <tr className="bg-foreground text-background">
               <td className="px-5 py-3.5 font-semibold">Total</td>
+              <td></td>
               <td className="px-5 py-3.5 text-right font-semibold tabular-nums">92</td>
-              <td className="px-5 py-3.5 text-right"></td>
+              <td></td>
               <td className="px-5 py-3.5 text-right font-semibold tabular-nums">$3,490</td>
-              <td className="px-5 py-3.5 text-right"></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      {/* Referrers + Top Customers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-border">
@@ -278,6 +302,7 @@ export default function SalesDashboardPage() {
             <thead>
               <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
                 <th className="px-5 py-3 text-left">Source</th>
+                <th className="px-5 py-3 text-center">7d</th>
                 <th className="px-5 py-3 text-right">Sessions</th>
                 <th className="px-5 py-3 text-right">Orders</th>
                 <th className="px-5 py-3 text-right">Revenue</th>
@@ -287,6 +312,11 @@ export default function SalesDashboardPage() {
               {salesData.topReferrers.map((r) => (
                 <tr key={r.source} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
                   <td className="px-5 py-3 font-medium text-foreground">{r.source}</td>
+                  <td className="px-5 py-3">
+                    <div className="flex justify-center">
+                      <Sparkline data={trendFromSeed(r.source, 7, r.sessions, 0.3)} width={70} height={22} />
+                    </div>
+                  </td>
                   <td className="px-5 py-3 text-right tabular-nums">{r.sessions.toLocaleString()}</td>
                   <td className="px-5 py-3 text-right tabular-nums">{r.orders}</td>
                   <td className="px-5 py-3 text-right font-semibold tabular-nums">{fmt(r.revenue)}</td>
@@ -323,7 +353,6 @@ export default function SalesDashboardPage() {
         </div>
       </div>
 
-      {/* AI insights */}
       <AIInsightBox title="AI Sales Insights">
         <ul className="space-y-2">
           {salesData.insights.map((insight, i) => (
