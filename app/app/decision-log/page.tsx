@@ -25,26 +25,26 @@ export default function DecisionLogPage() {
         {decisions.map((d) => {
           const isExpanded = expanded === d.id;
           return (
-            <div key={d.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div key={d.id} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
               <button
-                className="w-full px-5 py-4 flex items-start justify-between text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-5 py-4 flex items-start justify-between text-left hover:bg-muted/30 transition-colors"
                 onClick={() => setExpanded(isExpanded ? null : d.id)}
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono text-gray-400">D-{String(d.id).padStart(3, "0")}</span>
-                    <span className="text-xs text-gray-400">{d.date}</span>
+                    <span className="text-xs font-mono text-muted-foreground">D-{String(d.id).padStart(3, "0")}</span>
+                    <span className="text-xs text-muted-foreground">{d.date}</span>
                   </div>
-                  <p className="text-sm font-semibold text-gray-900">{d.businessIssue}</p>
-                  <p className="text-xs text-green-700 font-medium mt-1">✓ {d.humanDecision}</p>
+                  <p className="text-sm font-semibold text-foreground">{d.businessIssue}</p>
+                  <p className="text-xs text-green-700 font-medium mt-1">âœ“ {d.humanDecision}</p>
                 </div>
-                <span className="text-gray-400 mt-1">
+                <span className="text-muted-foreground mt-1">
                   {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                 </span>
               </button>
 
               {isExpanded && (
-                <div className="border-t border-gray-100 px-5 py-4 bg-gray-50 space-y-3">
+                <div className="border-t border-border px-5 py-4 bg-muted/30 space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
                       <div className="flex items-center gap-1.5 mb-1">
@@ -64,12 +64,12 @@ export default function DecisionLogPage() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Expected Impact</p>
-                      <p className="text-sm text-gray-800">{d.expectedImpact}</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Expected Impact</p>
+                      <p className="text-sm text-foreground">{d.expectedImpact}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Lesson Learned</p>
-                      <p className="text-sm text-gray-700 italic">{d.lessonLearned}</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Lesson Learned</p>
+                      <p className="text-sm text-foreground italic">{d.lessonLearned}</p>
                     </div>
                   </div>
                 </div>
@@ -79,7 +79,7 @@ export default function DecisionLogPage() {
         })}
       </div>
 
-      <p className="text-xs text-gray-400 mt-8 text-center">
+      <p className="text-xs text-muted-foreground mt-8 text-center">
         All data is simulated for portfolio demonstration purposes.
       </p>
     </div>

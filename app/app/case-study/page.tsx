@@ -47,40 +47,40 @@ export default function CaseStudyPage() {
       />
 
       {/* Overview */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Project Overview</h2>
-        <p className="text-sm text-gray-700 leading-relaxed mb-4">
+      <div className="bg-card rounded-xl border border-border shadow-sm p-6 mb-6">
+        <h2 className="text-lg font-semibold text-foreground mb-3">Project Overview</h2>
+        <p className="text-sm text-foreground leading-relaxed mb-4">
           AI Business Command Center is a portfolio demo showing how AI could support daily operations for a small online apparel company. The fictional business, PromptWear Co., sells AI-themed apparel and runs operations across sales, email, inventory, marketing, customer service, finance, and team meetings.
         </p>
-        <p className="text-sm text-gray-700 leading-relaxed">
+        <p className="text-sm text-foreground leading-relaxed">
           The dashboard represents a single operating day — Thursday, May 21, 2026 — and shows how AI can turn scattered business information into clear priorities, draft responses, forecasts, warnings, and recommended decisions.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Problem */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h2 className="text-base font-semibold text-gray-900 mb-3">Business Problem</h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
+        <div className="bg-card rounded-xl border border-border shadow-sm p-5">
+          <h2 className="text-base font-semibold text-foreground mb-3">Business Problem</h2>
+          <p className="text-sm text-foreground leading-relaxed">
             Small business owners manage sales, inventory, marketing, emails, customer service, suppliers, and finances across disconnected tools. This makes it hard to know what needs attention first. Important signals get buried in noise. Decisions are delayed or missed.
           </p>
         </div>
 
         {/* Solution */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-          <h2 className="text-base font-semibold text-gray-900 mb-3">AI Solution</h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
+        <div className="bg-card rounded-xl border border-border shadow-sm p-5">
+          <h2 className="text-base font-semibold text-foreground mb-3">AI Solution</h2>
+          <p className="text-sm text-foreground leading-relaxed">
             This dashboard uses simulated business data to show how AI can summarize information, flag risks, draft communications, forecast demand, recommend actions, and support executive decision-making — all in one place, every day.
           </p>
         </div>
       </div>
 
       {/* Features */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">What This Project Includes</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm p-5 mb-6">
+        <h2 className="text-base font-semibold text-foreground mb-3">What This Project Includes</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {features.map((f, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-gray-700">
+            <div key={i} className="flex items-start gap-2 text-sm text-foreground">
               <CheckCircle size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
               <span>{f}</span>
             </div>
@@ -89,8 +89,8 @@ export default function CaseStudyPage() {
       </div>
 
       {/* What it demonstrates */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">What This Demonstrates</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm p-5 mb-6">
+        <h2 className="text-base font-semibold text-foreground mb-3">What This Demonstrates</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             "Business operations understanding",
@@ -110,16 +110,16 @@ export default function CaseStudyPage() {
       </div>
 
       {/* Tech stack */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Tech Stack</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mb-6">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Tech Stack</h2>
         </div>
         <table className="w-full text-sm">
           <tbody>
             {techStack.map(({ tool, why }, i) => (
-              <tr key={tool} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                <td className="px-4 py-2.5 font-semibold text-gray-900 w-40">{tool}</td>
-                <td className="px-4 py-2.5 text-gray-600">{why}</td>
+              <tr key={tool} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-2.5 font-semibold text-foreground w-40">{tool}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{why}</td>
               </tr>
             ))}
           </tbody>
@@ -140,14 +140,14 @@ export default function CaseStudyPage() {
       </AIInsightBox>
 
       {/* Future roadmap */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">Future Roadmap</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm p-5 mb-6">
+        <h2 className="text-base font-semibold text-foreground mb-3">Future Roadmap</h2>
         <div className="space-y-2">
           {futureRoadmap.map(({ item, description }) => (
             <div key={item} className="flex items-center gap-3 text-sm">
               <ArrowRight size={14} className="text-blue-500 flex-shrink-0" />
-              <span className="font-medium text-gray-900">{item}</span>
-              <span className="text-gray-500">— {description}</span>
+              <span className="font-medium text-foreground">{item}</span>
+              <span className="text-muted-foreground">— {description}</span>
             </div>
           ))}
         </div>

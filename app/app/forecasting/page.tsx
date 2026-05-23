@@ -27,8 +27,8 @@ export default function ForecastingPage() {
       />
 
       {/* 7-day revenue forecast chart */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm mb-6">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">7-Day Revenue Forecast</h2>
+      <div className="bg-card rounded-xl border border-border p-5 shadow-sm mb-6">
+        <h2 className="text-sm font-semibold text-foreground mb-4">7-Day Revenue Forecast</h2>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={forecastData.weeklyRevenue}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -41,8 +41,8 @@ export default function ForecastingPage() {
       </div>
 
       {/* Orders forecast chart */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm mb-6">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">7-Day Orders Forecast</h2>
+      <div className="bg-card rounded-xl border border-border p-5 shadow-sm mb-6">
+        <h2 className="text-sm font-semibold text-foreground mb-4">7-Day Orders Forecast</h2>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={forecastData.weeklyRevenue}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -55,13 +55,13 @@ export default function ForecastingPage() {
       </div>
 
       {/* Forecast table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Revenue Forecast by Date</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mb-6">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Revenue Forecast by Date</h2>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
               <th className="px-4 py-3 text-left">Date</th>
               <th className="px-4 py-3 text-right">Forecast Revenue</th>
               <th className="px-4 py-3 text-right">Forecast Orders</th>
@@ -69,10 +69,10 @@ export default function ForecastingPage() {
           </thead>
           <tbody>
             {forecastData.weeklyRevenue.map((row, i) => (
-              <tr key={row.date} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                <td className="px-4 py-3 font-medium text-gray-900">{row.date}</td>
-                <td className="px-4 py-3 text-right text-gray-900 font-semibold">${row.revenue.toLocaleString()}</td>
-                <td className="px-4 py-3 text-right text-gray-700">{row.orders}</td>
+              <tr key={row.date} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-3 font-medium text-foreground">{row.date}</td>
+                <td className="px-4 py-3 text-right text-foreground font-semibold">${row.revenue.toLocaleString()}</td>
+                <td className="px-4 py-3 text-right text-foreground">{row.orders}</td>
               </tr>
             ))}
           </tbody>
@@ -80,13 +80,13 @@ export default function ForecastingPage() {
       </div>
 
       {/* Product demand forecast */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Product-Level Demand Forecast</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mb-6">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Product-Level Demand Forecast</h2>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
               <th className="px-4 py-3 text-left">Product</th>
               <th className="px-4 py-3 text-right">Current Inventory</th>
               <th className="px-4 py-3 text-right">7-Day Demand</th>
@@ -96,13 +96,13 @@ export default function ForecastingPage() {
           </thead>
           <tbody>
             {forecastData.productDemand.map((p, i) => (
-              <tr key={p.product} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                <td className="px-4 py-3 font-medium text-gray-900">
+              <tr key={p.product} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-3 font-medium text-foreground">
                   <div>{p.product}</div>
-                  <div className="text-xs text-gray-400 font-normal mt-0.5">{p.formulaNote}</div>
+                  <div className="text-xs text-muted-foreground font-normal mt-0.5">{p.formulaNote}</div>
                 </td>
-                <td className="px-4 py-3 text-right text-gray-700">{p.currentInventory}</td>
-                <td className="px-4 py-3 text-right font-semibold text-gray-900">{p.forecastDemand7Days}</td>
+                <td className="px-4 py-3 text-right text-foreground">{p.currentInventory}</td>
+                <td className="px-4 py-3 text-right font-semibold text-foreground">{p.forecastDemand7Days}</td>
                 <td className={`px-4 py-3 text-right font-semibold ${p.estimatedDaysLeft <= 5 ? "text-red-700" : p.estimatedDaysLeft <= 10 ? "text-amber-700" : "text-green-700"}`}>
                   {p.estimatedDaysLeft} days
                 </td>
@@ -122,7 +122,7 @@ export default function ForecastingPage() {
         {forecastData.explanation}
       </AIInsightBox>
 
-      <p className="text-xs text-gray-400 mt-8 text-center">
+      <p className="text-xs text-muted-foreground mt-8 text-center">
         All forecast data is simulated for portfolio demonstration purposes.
       </p>
     </div>

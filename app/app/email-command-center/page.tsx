@@ -39,14 +39,14 @@ export default function EmailCommandCenterPage() {
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
               filter === f
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                ? "bg-foreground text-background border-gray-900"
+                : "bg-card text-muted-foreground border-border hover:bg-muted/30"
             }`}
           >
             {f === "all" ? "All Emails" : f.charAt(0).toUpperCase() + f.slice(1) + " Urgency"}
           </button>
         ))}
-        <span className="ml-auto text-xs text-gray-400 self-center">{filtered.length} email{filtered.length !== 1 ? "s" : ""}</span>
+        <span className="ml-auto text-xs text-muted-foreground self-center">{filtered.length} email{filtered.length !== 1 ? "s" : ""}</span>
       </div>
 
       {/* Email cards */}
@@ -58,16 +58,16 @@ export default function EmailCommandCenterPage() {
           return (
             <div
               key={email.id}
-              className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden"
+              className="bg-card rounded-xl border border-border shadow-sm overflow-hidden"
             >
               {/* Email header row */}
               <button
-                className="w-full px-4 py-4 flex items-start gap-4 text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-4 py-4 flex items-start gap-4 text-left hover:bg-muted/30 transition-colors"
                 onClick={() => setExpanded(isExpanded ? null : email.id)}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-gray-900">{email.sender}</span>
+                    <span className="text-sm font-semibold text-foreground">{email.sender}</span>
                     <StatusBadge
                       label={email.urgency.charAt(0).toUpperCase() + email.urgency.slice(1)}
                       variant={urgencyVariant(email.urgency)}
@@ -78,26 +78,26 @@ export default function EmailCommandCenterPage() {
                         CEO Approval
                       </span>
                     )}
-                    <span className="text-xs text-gray-400 ml-auto">{email.received}</span>
+                    <span className="text-xs text-muted-foreground ml-auto">{email.received}</span>
                   </div>
-                  <p className="text-sm text-gray-700 mt-0.5 font-medium">{email.subject}</p>
-                  <p className="text-xs text-gray-500 mt-1">{email.summary}</p>
+                  <p className="text-sm text-foreground mt-0.5 font-medium">{email.subject}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{email.summary}</p>
                 </div>
-                <span className="flex-shrink-0 text-gray-400 mt-1">
+                <span className="flex-shrink-0 text-muted-foreground mt-1">
                   {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                 </span>
               </button>
 
               {/* Expanded content */}
               {isExpanded && (
-                <div className="border-t border-gray-100 px-4 py-4 bg-gray-50 space-y-3">
+                <div className="border-t border-border px-4 py-4 bg-muted/30 space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Suggested Action</p>
-                      <p className="text-sm text-gray-800">{email.suggestedAction}</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Suggested Action</p>
+                      <p className="text-sm text-foreground">{email.suggestedAction}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Business Impact if Ignored</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Business Impact if Ignored</p>
                       <p className="text-sm text-red-700 font-medium">{email.businessImpact}</p>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ export default function EmailCommandCenterPage() {
         })}
       </div>
 
-      <p className="text-xs text-gray-400 mt-8 text-center">
+      <p className="text-xs text-muted-foreground mt-8 text-center">
         All emails are simulated for portfolio demonstration purposes.
       </p>
     </div>

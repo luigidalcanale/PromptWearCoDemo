@@ -29,13 +29,13 @@ export default function MarketingPage() {
       />
 
       {/* Campaign table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Active Campaigns</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mb-6">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Active Campaigns</h2>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
               <th className="px-4 py-3 text-left">Campaign</th>
               <th className="px-4 py-3 text-left">Channel</th>
               <th className="px-4 py-3 text-right">Spend</th>
@@ -46,18 +46,18 @@ export default function MarketingPage() {
           </thead>
           <tbody>
             {mktData.campaigns.map((c, i) => (
-              <tr key={c.name} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                <td className="px-4 py-3 font-medium text-gray-900">{c.name}</td>
-                <td className="px-4 py-3 text-gray-600">{c.channel}</td>
-                <td className="px-4 py-3 text-right text-gray-700">{c.spend === 0 ? "$0" : `$${c.spend}`}</td>
-                <td className="px-4 py-3 text-right font-semibold text-gray-900">${c.revenue.toLocaleString()}</td>
+              <tr key={c.name} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-3 font-medium text-foreground">{c.name}</td>
+                <td className="px-4 py-3 text-muted-foreground">{c.channel}</td>
+                <td className="px-4 py-3 text-right text-foreground">{c.spend === 0 ? "$0" : `$${c.spend}`}</td>
+                <td className="px-4 py-3 text-right font-semibold text-foreground">${c.revenue.toLocaleString()}</td>
                 <td className="px-4 py-3 text-right font-semibold">
                   {c.roas !== null ? (
                     <span className={c.roas >= 3 ? "text-green-700" : c.roas >= 2 ? "text-amber-700" : "text-red-700"}>
                       {c.roas}x
                     </span>
                   ) : (
-                    <span className="text-gray-400">N/A</span>
+                    <span className="text-muted-foreground">N/A</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-center">
@@ -71,8 +71,8 @@ export default function MarketingPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* ROAS chart */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">ROAS by Campaign</h2>
+        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-4">ROAS by Campaign</h2>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={roasData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
@@ -88,21 +88,21 @@ export default function MarketingPage() {
         </div>
 
         {/* A/B tests */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">A/B Test Results</h2>
+        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-4">A/B Test Results</h2>
           <div className="space-y-3">
             {mktData.abTests.map((t) => (
-              <div key={t.test} className="border border-gray-100 rounded-lg p-3">
+              <div key={t.test} className="border border-border rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-gray-800">{t.test}</p>
+                  <p className="text-xs font-semibold text-foreground">{t.test}</p>
                   <span className="flex items-center gap-1 text-xs text-green-700 font-medium">
                     <CheckCircle size={11} />
                     {t.winner}
                   </span>
                 </div>
-                <div className="flex gap-3 text-xs text-gray-600">
-                  <span className="bg-gray-100 px-2 py-0.5 rounded">A: {t.versionA}</span>
-                  <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-medium">B: {t.versionB} ✓</span>
+                <div className="flex gap-3 text-xs text-muted-foreground">
+                  <span className="bg-muted px-2 py-0.5 rounded">A: {t.versionA}</span>
+                  <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-medium">B: {t.versionB} âœ“</span>
                 </div>
               </div>
             ))}
@@ -112,13 +112,13 @@ export default function MarketingPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Customer segments */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="text-sm font-semibold text-gray-700">Customer Segments</h2>
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="px-5 py-4 border-b border-border">
+            <h2 className="text-sm font-semibold text-foreground">Customer Segments</h2>
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
                 <th className="px-4 py-3 text-left">Segment</th>
                 <th className="px-4 py-3 text-left">Behavior</th>
                 <th className="px-4 py-3 text-left">Opportunity</th>
@@ -126,9 +126,9 @@ export default function MarketingPage() {
             </thead>
             <tbody>
               {mktData.segments.map((s, i) => (
-                <tr key={s.segment} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <td className="px-4 py-3 font-medium text-gray-900">{s.segment}</td>
-                  <td className="px-4 py-3 text-gray-600 text-xs">{s.behavior}</td>
+                <tr key={s.segment} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3 font-medium text-foreground">{s.segment}</td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs">{s.behavior}</td>
                   <td className="px-4 py-3">
                     <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">{s.opportunity}</span>
                   </td>
@@ -139,11 +139,11 @@ export default function MarketingPage() {
         </div>
 
         {/* Content ideas */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">AI-Generated Content Ideas</h2>
+        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-3">AI-Generated Content Ideas</h2>
           <ul className="space-y-2">
             {mktData.contentIdeas.map((idea, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+              <li key={i} className="flex items-start gap-2 text-sm text-foreground">
                 <span className="text-blue-500 mt-0.5 flex-shrink-0">•</span>
                 <span>&ldquo;{idea}&rdquo;</span>
               </li>
@@ -156,15 +156,15 @@ export default function MarketingPage() {
       <AIInsightBox title="AI-Suggested Marketing Actions">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {mktData.suggestedActions.map((a, i) => (
-            <div key={i} className="bg-white rounded-lg p-3 border border-blue-100">
-              <p className="text-sm font-semibold text-gray-900">→ {a.action}</p>
-              <p className="text-xs text-gray-500 mt-1">{a.reason}</p>
+            <div key={i} className="bg-card rounded-lg p-3 border border-blue-100">
+              <p className="text-sm font-semibold text-foreground">→ {a.action}</p>
+              <p className="text-xs text-muted-foreground mt-1">{a.reason}</p>
             </div>
           ))}
         </div>
       </AIInsightBox>
 
-      <p className="text-xs text-gray-400 mt-8 text-center">
+      <p className="text-xs text-muted-foreground mt-8 text-center">
         All data is simulated for portfolio demonstration purposes.
       </p>
     </div>

@@ -57,9 +57,9 @@ export default function FinancePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* P&L table */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="text-sm font-semibold text-gray-700">Profit & Loss — Today</h2>
+        <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+          <div className="px-5 py-4 border-b border-border">
+            <h2 className="text-sm font-semibold text-foreground">Profit & Loss — Today</h2>
           </div>
           <table className="w-full text-sm">
             <tbody>
@@ -68,13 +68,13 @@ export default function FinancePage() {
                   key={row.label}
                   className={
                     row.bold
-                      ? "bg-gray-900 text-white"
+                      ? "bg-foreground text-background"
                       : i % 2 === 0
-                      ? "bg-white"
-                      : "bg-gray-50"
+                      ? "bg-card"
+                      : "bg-muted/30"
                   }
                 >
-                  <td className={`px-4 py-2.5 ${row.indent ? "pl-8" : ""} ${row.bold ? "font-semibold" : "text-gray-600"}`}>
+                  <td className={`px-4 py-2.5 ${row.indent ? "pl-8" : ""} ${row.bold ? "font-semibold" : "text-muted-foreground"}`}>
                     {row.label}
                   </td>
                   <td
@@ -85,7 +85,7 @@ export default function FinancePage() {
                           : "text-red-400"
                         : row.value < 0
                         ? "text-red-600"
-                        : "text-gray-900"
+                        : "text-foreground"
                     }`}
                   >
                     {fmt(row.value)}
@@ -97,8 +97,8 @@ export default function FinancePage() {
         </div>
 
         {/* Cost breakdown chart */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Cost Breakdown</h2>
+        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+          <h2 className="text-sm font-semibold text-foreground mb-4">Cost Breakdown</h2>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={costData} layout="vertical" margin={{ left: 10, right: 40 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
@@ -112,9 +112,9 @@ export default function FinancePage() {
       </div>
 
       {/* Cash tracker */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Cash Tracker</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mb-6">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Cash Tracker</h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0 divide-x divide-gray-100">
           {[
@@ -126,7 +126,7 @@ export default function FinancePage() {
             ["Hoodie Reorder Cost", `$${finData.cashTracker.proposedHoodieReorderCost.toLocaleString()}`, "text-amber-700"],
           ].map(([label, value, color]) => (
             <div key={label} className="px-5 py-4">
-              <p className="text-xs text-gray-500 mb-1">{label}</p>
+              <p className="text-xs text-muted-foreground mb-1">{label}</p>
               <p className={`text-xl font-bold ${color}`}>{value}</p>
             </div>
           ))}
@@ -146,21 +146,21 @@ export default function FinancePage() {
       </AIInsightBox>
 
       {/* Cost-saving actions */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700">Recommended Cost-Saving Actions</h2>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">Recommended Cost-Saving Actions</h2>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <tr className="bg-muted/40 text-xs font-semibold text-muted-foreground">
               <th className="px-4 py-3 text-left">Action</th>
               <th className="px-4 py-3 text-right">Est. Weekly Impact</th>
             </tr>
           </thead>
           <tbody>
             {finData.costSavingActions.map((a, i) => (
-              <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                <td className="px-4 py-3 text-gray-800">→ {a.action}</td>
+              <tr key={i} className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-3 text-foreground">→ {a.action}</td>
                 <td className="px-4 py-3 text-right font-semibold text-green-700">+${a.estimatedWeeklyImpact}</td>
               </tr>
             ))}
@@ -168,7 +168,7 @@ export default function FinancePage() {
         </table>
       </div>
 
-      <p className="text-xs text-gray-400 mt-8 text-center">
+      <p className="text-xs text-muted-foreground mt-8 text-center">
         All data is simulated for portfolio demonstration purposes.
       </p>
     </div>
