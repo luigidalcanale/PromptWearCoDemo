@@ -9,6 +9,7 @@ import { PrintButton } from "@/components/PrintButton";
 import { LastUpdated } from "@/components/LastUpdated";
 import { LiveStatusDot } from "@/components/LiveStatusDot";
 import { LiveActivityFeed } from "@/components/LiveActivityFeed";
+import { LiveGeoMap } from "@/components/LiveGeoMap";
 import { EmptyState } from "@/components/EmptyState";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { useLiveValue } from "@/lib/useLiveValue";
@@ -331,6 +332,10 @@ export default function CEOHomePage() {
 
           <LiveActivityFeed />
         </div>
+      </div>
+
+      <div className="mt-8">
+        <LiveGeoMap />
       </div>
 
       <p className="text-xs text-muted-foreground mt-10 text-center">
